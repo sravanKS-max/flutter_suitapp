@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class DashboardConstants {
   static const Color brandBlue = Color(
     0xFF2300C4,
-  ); // same as LoginPage.brandBlue
+  );
   static const Color bg = Color(0xFFF6F7FB);
 
   static const double radiusLg = 26;
