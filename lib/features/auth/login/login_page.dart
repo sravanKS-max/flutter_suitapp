@@ -10,6 +10,7 @@ import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:suitapps/services/auth_session_service.dart';
+import './forgot_password_page.dart';
 
 import '../dashboard/dashboard_page.dart';
 import 'package:suitapps/shared/utils/responsive.dart';
@@ -40,11 +41,6 @@ class CompanyItem {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  // static const String companiesUrl = 'https://testapi.suitapps.in/api/companies';
-  // static const String loginUrl = 'https://testapi.suitapps.in/api/login';
-  // static const String insertLoginLogUrl =
-  //     'https://testapi.suitapps.in/api/insertLoginLog';
-
   final _usernameCtrl = TextEditingController();
   final _passwordCtrl = TextEditingController();
 
@@ -338,48 +334,6 @@ class _LoginPageState extends State<LoginPage> {
     } catch (_) {}
   }
 
-  /// Fetch route info (RouteId, RouteName) for the given employee for today
-  // Future<void> _fetchAndSaveRoute(int empId) async {
-  //   try {
-  //     final dateStr = DateFormat('yyyy-MM-dd').format(DateTime.now());
-  //     final uri = Uri.parse('${ApiConfig.baseUrl}${ApiConfig.getrootNameUrl}?empId=$empId&date=$dateStr');
-  //     final res = await http.get(uri).timeout(const Duration(seconds: 20));
-  //     if (res.statusCode < 200 || res.statusCode >= 300) return;
-
-  //     final decoded = jsonDecode(res.body);
-  //     String routeId = '';
-  //     String routeName = '';
-
-  //     if (decoded is Map<String, dynamic>) {
-  //       if (decoded.containsKey('RouteId')) routeId = decoded['RouteId']?.toString() ?? '';
-  //       if (decoded.containsKey('RouteID')) routeId = decoded['RouteID']?.toString() ?? routeId;
-  //       if (decoded.containsKey('rootID')) routeId = decoded['rootID']?.toString() ?? routeId;
-  //       if (decoded.containsKey('RouteName')) routeName = decoded['RouteName']?.toString() ?? '';
-  //       if (decoded.containsKey('rootName')) routeName = decoded['rootName']?.toString() ?? routeName;
-
-  //       // If server returns a data list
-  //       if ((routeId.isEmpty || routeName.isEmpty) && decoded['data'] is List && decoded['data'].isNotEmpty) {
-  //         final first = decoded['data'][0] as Map<String, dynamic>;
-  //         routeId = routeId.isEmpty
-  //             ? (first['RouteId']?.toString() ?? first['RouteID']?.toString() ?? first['rootID']?.toString() ?? '')
-  //             : routeId;
-  //         routeName = routeName.isEmpty
-  //             ? (first['RouteName']?.toString() ?? first['rootName']?.toString() ?? '')
-  //             : routeName;
-  //       }
-  //     }
-
-  //     if (routeId.isNotEmpty || routeName.isNotEmpty) {
-  //       print('Fetched login route info: routeId=$routeId, routeName=$routeName');
-  //       final authSvc = AuthSessionService();
-  //       await authSvc.setRouteInfo(routeId: routeId, routeName: routeName);
-  //     } else {
-  //       print('No route info returned for empId=$empId date=$dateStr');
-  //     }
-  //   } catch (error) {
-  //     print('Failed to fetch route info: $error');
-  //   }
-  // }
   Future<void> _fetchAndSaveRoute(int empId) async {
     try {
       final dateStr = DateFormat('yyyy-MM-dd').format(DateTime.now());
@@ -566,7 +520,14 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
-  void _forgotPassword() {}
+ void _forgotPassword() {
+  Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: (_) => const ForgotPasswordPage(),
+    ),
+  );
+}
 
   @override
   Widget build(BuildContext context) {

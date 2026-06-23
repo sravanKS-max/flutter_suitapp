@@ -378,25 +378,6 @@ class _FabItem {
   final Color color;
 }
 
-// ── Spring curve ───────────────────────────────────────────────────────────
-
-// class _SpringCurve extends Curve {
-//   const _SpringCurve();
-
-//   @override
-//   double transformInternal(double t) {
-//     const spring = SpringDescription(mass: 1, stiffness: 200, damping: 18);
-//     final sim = SpringSimulation(spring, 0, 1, 0);
-//     double prev = 0;
-//     double time = 0;
-//     while (time < t) {
-//       time += 0.001;
-//       prev = sim.x(time);
-//     }
-//     return prev.clamp(0.0, 1.0);
-//   }
-// }
-
 
 class _SpringCurve extends Curve {
   const _SpringCurve();

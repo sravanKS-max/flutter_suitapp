@@ -9,10 +9,15 @@ class ApiConfig {
   static const String loginEndpoint = '/login';
   static const String companiesUrl = '/companies';
   static const String insertLoginLogUrl = '/insertLoginLog';
+
+  //suitapp
   static const String getrootNameUrl = '/GetRouteName';
   static const String getCustomersUrl = '/GetCustomerDetails';
+  static const String sendOtp = '/sendOtp';
+  static const String resetPassword = '/resetPassword';
 
   // Timeouts
   static const Duration connectionTimeout = Duration(seconds: 30);
   static const Duration receiveTimeout = Duration(seconds: 30);
 }
+         

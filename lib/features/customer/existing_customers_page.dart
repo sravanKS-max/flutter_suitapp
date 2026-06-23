@@ -260,8 +260,8 @@ class _ExistingCustomersPageState extends State<ExistingCustomersPage> {
               : Column(
                   children: [
                     const SizedBox(height: _T.md),
-                    _routeTabs(),
-                    const SizedBox(height: _T.md),
+                    // _routeTabs(),
+                    // const SizedBox(height: _T.md),
                     _searchBar(),
                     const SizedBox(height: _T.md),
                     _sortToggleBar(),
@@ -298,43 +298,101 @@ class _ExistingCustomersPageState extends State<ExistingCustomersPage> {
   }
 
   // ── Error State ───────────────────────────────────────────────────
+  // Widget _noResultsState() {
+  //   return Center(
+  //     child: Padding(
+  //       padding: const EdgeInsets.all(_T.xl),
+  //       child: Column(
+  //         mainAxisSize: MainAxisSize.min,
+  //         children: [
+  //           Container(
+  //             padding: const EdgeInsets.all(_T.lg),
+  //             decoration: BoxDecoration(
+  //               color: _T.warning.withValues(alpha: 0.08),
+  //               shape: BoxShape.circle,
+  //             ),
+  //             child: const Icon(Icons.search_off_rounded, size: 36, color: _T.warning),
+  //           ),
+  //           const SizedBox(height: _T.lg),
+  //           Text(
+  //             'No customers found',
+  //             style: _T.sectionTitle,
+  //             textAlign: TextAlign.center,
+  //           ),
+  //           const SizedBox(height: _T.sm),
+  //           Text(
+  //             'Try searching with different keywords:\nname, place, city, or mobile number',
+  //             style: _T.inputText.copyWith(color: _T.textSecondary),
+  //             textAlign: TextAlign.center,
+  //           ),
+  //           const SizedBox(height: _T.lg),
+  //           _ghostButton(label: 'Clear Search', icon: Icons.clear_rounded, color: _T.primaryBlue, onTap: () {
+  //             _searchController.clear();
+  //             _applyFilter();
+  //           }),
+  //         ],
+  //       ),
+  //     ),
+  //   );
+  // }
   Widget _noResultsState() {
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(_T.xl),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              padding: const EdgeInsets.all(_T.lg),
-              decoration: BoxDecoration(
-                color: _T.warning.withValues(alpha: 0.08),
-                shape: BoxShape.circle,
+  return SingleChildScrollView(
+    child: SizedBox(
+      height: MediaQuery.of(context).size.height * 0.55,
+      child: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(_T.xl),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                padding: const EdgeInsets.all(_T.lg),
+                decoration: BoxDecoration(
+                  color: _T.warning.withValues(alpha: 0.08),
+                  shape: BoxShape.circle,
+                ),
+                child: const Icon(
+                  Icons.search_off_rounded,
+                  size: 36,
+                  color: _T.warning,
+                ),
               ),
-              child: const Icon(Icons.search_off_rounded, size: 36, color: _T.warning),
-            ),
-            const SizedBox(height: _T.lg),
-            Text(
-              'No customers found',
-              style: _T.sectionTitle,
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: _T.sm),
-            Text(
-              'Try searching with different keywords:\nname, place, city, or mobile number',
-              style: _T.inputText.copyWith(color: _T.textSecondary),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: _T.lg),
-            _ghostButton(label: 'Clear Search', icon: Icons.clear_rounded, color: _T.primaryBlue, onTap: () {
-              _searchController.clear();
-              _applyFilter();
-            }),
-          ],
+
+              const SizedBox(height: _T.lg),
+
+              Text(
+                'No customers found',
+                style: _T.sectionTitle,
+                textAlign: TextAlign.center,
+              ),
+
+              const SizedBox(height: _T.sm),
+
+              Text(
+                'Try searching with different keywords:\nname, place, city, or mobile number',
+                style: _T.inputText.copyWith(
+                    color: _T.textSecondary),
+                textAlign: TextAlign.center,
+              ),
+
+              const SizedBox(height: _T.lg),
+
+              _ghostButton(
+                label: 'Clear Search',
+                icon: Icons.clear_rounded,
+                color: _T.primaryBlue,
+                onTap: () {
+                  _searchController.clear();
+                  _applyFilter();
+                },
+              ),
+            ],
+          ),
         ),
       ),
-    );
-  }
+    ),
+  );
+}
 
   Widget _searchBar() {
     return Padding(

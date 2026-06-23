@@ -133,21 +133,21 @@ class AppDrawer extends StatelessWidget {
                             ),
 
                             // Customer List
-                            ListTile(
-                              dense: true,
-                              leading: const Icon(Icons.list_alt),
-                              title: const Text("Customer List"),
-                              onTap: () {
-                                Navigator.pop(context);
+                            // ListTile(
+                            //   dense: true,
+                            //   leading: const Icon(Icons.list_alt),
+                            //   title: const Text("Customer List"),
+                            //   onTap: () {
+                            //     Navigator.pop(context);
 
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (_) => const CustomerListPage(),
-                                  ),
-                                );
-                              },
-                            ),
+                            //     Navigator.push(
+                            //       context,
+                            //       MaterialPageRoute(
+                            //         builder: (_) => const CustomerListPage(),
+                            //       ),
+                            //     );
+                            //   },
+                            // ),
                             // Existing Customers
                             ListTile(
                               dense: true,
