@@ -10,6 +10,7 @@ import 'package:suitapps/shared/widgets/common_bottom_nav.dart';
 import 'package:suitapps/shared/widgets/expandable_fab.dart';
 
 import 'package:suitapps/shared/utils/responsive.dart';
+import '../../../services/session_timeout_service.dart';
 
 import 'dashboard_constants.dart';
 import 'widgets/dashboard_header.dart';
@@ -37,6 +38,8 @@ class DashboardPage extends StatefulWidget {
 
 class _DashboardPageState extends State<DashboardPage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
+  final SessionTimeoutService sessionService = SessionTimeoutService();
 
   int _bottomIndex = 0;
   int _segmentIndex = 0;
@@ -103,9 +106,24 @@ class _DashboardPageState extends State<DashboardPage> {
     }
   }
 
+  // @override
+  // void initState() {
+  //   super.initState();
+
+  //   final name = (widget.userDecoded['Name'] ?? '').toString().trim();
+  //   _name = name.isEmpty ? "User" : name;
+
+  //   final p = (widget.userDecoded['ProfileImage'] ?? '').toString().trim();
+  //   _profileUrl = p.isEmpty ? null : p;
+
+  //   _hydrateFromPrefs();
+  // }
   @override
   void initState() {
     super.initState();
+
+    // auto logout at 12:00 AM
+    sessionService.start(context);
 
     final name = (widget.userDecoded['Name'] ?? '').toString().trim();
     _name = name.isEmpty ? "User" : name;
@@ -140,6 +158,13 @@ class _DashboardPageState extends State<DashboardPage> {
         _profileUrl = profile ?? _profileUrl;
       });
     } catch (_) {}
+  }
+
+  @override
+  void dispose() {
+    sessionService.stop();
+
+    super.dispose();
   }
 
   void _openDrawer() => _scaffoldKey.currentState?.openDrawer();
@@ -216,7 +241,7 @@ class _DashboardPageState extends State<DashboardPage> {
       //   child: const ExpandableFab(),
       // ),
       floatingActionButton: Padding(
-        padding: EdgeInsets.only(bottom: Responsive.pad(context, 70)),
+        padding: EdgeInsets.only(bottom: Responsive.pad(context, 90)),
         child: ExpandableFab(
           onCustomerTap: () {
             Navigator.push(

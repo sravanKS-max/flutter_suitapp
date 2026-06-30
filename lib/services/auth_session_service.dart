@@ -7,7 +7,10 @@ class AuthSessionService {
   static const _keyRouteName = 'routeName';
 
   /// Save route info (non-sensitive) in session prefs
-  Future<void> setRouteInfo({required String routeId, required String routeName}) async {
+  Future<void> setRouteInfo({
+    required String routeId,
+    required String routeName,
+  }) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString(_keyRouteId, routeId);
     await prefs.setString(_keyRouteName, routeName);

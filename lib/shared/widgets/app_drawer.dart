@@ -6,8 +6,9 @@ import 'package:suitapps/shared/utils/responsive.dart';
 import 'package:suitapps/features/auth/profile/profile_page.dart';
 import 'package:suitapps/features/auth/settings/settings_page.dart';
 import 'package:suitapps/features/customer/customer_create_page.dart';
-import 'package:suitapps/features/customer/customer_list_page.dart';
+
 import 'package:suitapps/features/customer/existing_customers_page.dart';
+import '../../features/auth/dashboard/leave/apply_leave_page.dart';
 
 class AppDrawer extends StatelessWidget {
   const AppDrawer({super.key, required this.onLogout, this.profileUrl});
@@ -107,6 +108,8 @@ class AppDrawer extends StatelessWidget {
                           title: "Home",
                           onTap: () => Navigator.pop(context),
                         ),
+
+                        //
                         ExpansionTile(
                           leading: Icon(
                             Icons.people_rounded,
@@ -114,14 +117,12 @@ class AppDrawer extends StatelessWidget {
                           ),
                           title: const Text("Customer"),
                           children: [
-                            // Create Customer
                             ListTile(
                               dense: true,
                               leading: const Icon(Icons.add_circle_outline),
                               title: const Text("Create New Customer"),
                               onTap: () {
                                 Navigator.pop(context);
-
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
@@ -132,39 +133,38 @@ class AppDrawer extends StatelessWidget {
                               },
                             ),
 
-                            // Customer List
-                            // ListTile(
-                            //   dense: true,
-                            //   leading: const Icon(Icons.list_alt),
-                            //   title: const Text("Customer List"),
-                            //   onTap: () {
-                            //     Navigator.pop(context);
-
-                            //     Navigator.push(
-                            //       context,
-                            //       MaterialPageRoute(
-                            //         builder: (_) => const CustomerListPage(),
-                            //       ),
-                            //     );
-                            //   },
-                            // ),
-                            // Existing Customers
                             ListTile(
                               dense: true,
                               leading: const Icon(Icons.people_alt_rounded),
                               title: const Text("Existing Customers"),
                               onTap: () {
                                 Navigator.pop(context);
-
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (_) => const ExistingCustomersPage(),
+                                    builder: (_) =>
+                                        const ExistingCustomersPage(),
                                   ),
                                 );
                               },
                             ),
                           ],
+                        ),
+
+                        // ADD THIS AFTER ExpansionTile
+                        _drawerItem(
+                          context,
+                          icon: Icons.beach_access_rounded,
+                          title: "Apply Leave",
+                          onTap: () {
+                            Navigator.pop(context);
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => const ApplyLeavePage(),
+                              ),
+                            );
+                          },
                         ),
                         _drawerItem(
                           context,

@@ -15,6 +15,15 @@ class ApiConfig {
   static const String getCustomersUrl = '/GetCustomerDetails';
   static const String sendOtp = '/sendOtp';
   static const String resetPassword = '/resetPassword';
+  static const String getAttendanceTypes = '/getAttendanceTypes';
+  static const String insertEmployeeAttendance = '/insertEmployeeAttendance';
+  static const String checkTodayAttendance = '/checkTodayAttendance';
+  static const String getLeaveTypes = '/getLeaveTypes';
+  static const String insertLeaveRequest = '/insertLeaveRequest';
+  // static const String getLeaveRequests = '/getLeaveRequests';
+  static const String getAllRootsByEmp = '/getAllRootsByEmp';
+  
+ 
 
   // Timeouts
   static const Duration connectionTimeout = Duration(seconds: 30);

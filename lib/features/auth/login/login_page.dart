@@ -14,6 +14,7 @@ import './forgot_password_page.dart';
 
 import '../dashboard/dashboard_page.dart';
 import 'package:suitapps/shared/utils/responsive.dart';
+import '../dashboard/attendance/attendance_page.dart';
 
 import 'package:suitapps/config/api_config.dart';
 
@@ -61,6 +62,7 @@ class _LoginPageState extends State<LoginPage> {
   void initState() {
     super.initState();
     _fetchCompanies();
+      _checkMidnightLogout();
   }
 
   @override
@@ -89,6 +91,40 @@ class _LoginPageState extends State<LoginPage> {
     ).join();
     return 'sess_$suffix';
   }
+  Future<void> _checkMidnightLogout() async {
+  final prefs = await SharedPreferences.getInstance();
+
+  final isLoggedIn = prefs.getBool('isLoggedIn') ?? false;
+
+  if (!isLoggedIn) return;
+
+  final savedDate = prefs.getString('loginDate');
+
+  if (savedDate == null) return;
+
+  final today = DateFormat('yyyy-MM-dd').format(DateTime.now());
+
+  // different day means session expired after 12 AM
+  if (savedDate != today) {
+
+    await prefs.clear();
+
+    if (!mounted) return;
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text("Session expired. Please login again"),
+      ),
+    );
+
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (_) => const LoginPage(),
+      ),
+    );
+  }
+}
 
   // -----------------------------
   // ✅ API: COMPANIES
@@ -491,27 +527,70 @@ class _LoginPageState extends State<LoginPage> {
             : int.tryParse(decoded['UserRoleId'].toString()) ?? 0,
       );
 
+      // await prefs.setString('user', jsonEncode(decoded));
+
+      // // Fetch route info for this employee for today and save in session
+      // try {
+      //   final int userId = decoded['UserId'] is int
+      //       ? decoded['UserId']
+      //       : int.tryParse(decoded['UserId'].toString()) ?? 0;
+      //   await _fetchAndSaveRoute(userId);
+      // } catch (_) {}
+
+      if (!mounted) return;
       await prefs.setString('user', jsonEncode(decoded));
+
+      final attendanceResponse = await http.get(
+        Uri.parse(
+          '${ApiConfig.baseUrl}${ApiConfig.checkTodayAttendance}'
+          '?CompanyID=${decoded["CompanyID"]}'
+          '&EmployeeID=${decoded["UserId"]}',
+        ),
+      );
+
+      final attendanceData = jsonDecode(attendanceResponse.body);
 
       // Fetch route info for this employee for today and save in session
       try {
         final int userId = decoded['UserId'] is int
             ? decoded['UserId']
             : int.tryParse(decoded['UserId'].toString()) ?? 0;
+
         await _fetchAndSaveRoute(userId);
       } catch (_) {}
 
       if (!mounted) return;
 
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (_) => DashboardPage(
-            userDecoded: (decoded is Map<String, dynamic>) ? decoded : {},
-            sessionId: sessionId,
+      if (attendanceData["success"] == true &&
+          attendanceData["attendanceMarked"] == true) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (_) =>
+                DashboardPage(userDecoded: decoded, sessionId: sessionId),
           ),
-        ),
-      );
+        );
+      } else {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (_) =>
+                AttendancePage(userDecoded: decoded, sessionId: sessionId),
+          ),
+        );
+      }
+
+      return;
+
+      // Navigator.pushReplacement(
+      //   context,
+      //   MaterialPageRoute(
+      //     builder: (_) => AttendancePage(
+      //       userDecoded: (decoded is Map<String, dynamic>) ? decoded : {},
+      //       sessionId: sessionId,
+      //     ),
+      //   ),
+      // );
     } catch (_) {
       if (!mounted) return;
       setState(() => _apiError = 'Login failed. Please try again.');
@@ -520,14 +599,12 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
- void _forgotPassword() {
-  Navigator.push(
-    context,
-    MaterialPageRoute(
-      builder: (_) => const ForgotPasswordPage(),
-    ),
-  );
-}
+  void _forgotPassword() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (_) => const ForgotPasswordPage()),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
